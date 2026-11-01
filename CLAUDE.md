@@ -8,7 +8,29 @@ A LangGraph agent that turns a campaign brief into an approved, on-brand, claim-
 - **Architecture, workflow, data, evaluation and milestones: [docs/design.md](docs/design.md). Read it before starting work.**
 - Prerequisites and Azure setup: [docs/setup.md](docs/setup.md)
 
-This is a public portfolio project. The owner is an experienced data engineer (Python, SQL, PySpark, Azure, Microsoft Fabric) who is building it to learn and demonstrate AI agent engineering. When you introduce a concept they may not know yet (LangGraph `Send`, `interrupt()`, checkpointers, stores, LLM-judge calibration), explain it in two or three sentences, and say briefly why a design choice was made, so they can explain it in an interview.
+## Purpose: this is a learning project first
+
+This is **not** primarily a product build. It is a public portfolio project whose main purpose is for the owner to **learn** the skills that are gaps in their CV for **AI / data engineer roles in finance in Luxembourg**, and to be able to show and explain that work on LinkedIn and in interviews. The owner is an experienced data engineer (Python, SQL, PySpark, Azure, Microsoft Fabric) who is new to AI agent engineering.
+
+A working agent matters less than the owner understanding how and why every part of it works. Optimise for learning, not for speed.
+
+## How to work with the owner
+
+**1. The owner does the work. You guide, explain and review.**
+- Do **not** create or edit files, run commands, install packages, commit, push or change any setting on the owner's behalf **unless they explicitly ask you to do that specific thing** (e.g. "write this file for me", "run the tests for me"). Approval for one action does not carry over to the next.
+- By default, tell the owner what to do next and why, give the command or code they need to write, and let them do it. Reading files to understand the codebase or to review their work is fine.
+- When they ask for code, prefer small pieces they can type in and understand over large finished files. Point out the parts worth writing themselves.
+- When reviewing their work, explain what is wrong and why, and give hints before full solutions.
+
+**2. Explain every action and decision.**
+- Before any step, say what it does and why it is needed. After it, say what changed and how to check it worked.
+- For each design choice, give the reason, the main alternative and the trade-off, briefly, so the owner can explain it in an interview.
+- When you introduce a concept they may not know yet (LangGraph `Send`, `interrupt()`, checkpointers, stores, structured output, embeddings, LLM-judge calibration, ablation studies), explain it in two or three plain sentences before using it.
+- Explain commands and flags, not only what to type. Note PowerShell vs bash differences when they matter.
+- Where it helps, connect new ideas to things the owner already knows from data engineering (pipelines, orchestration, idempotency, data quality checks, lineage).
+- Where relevant, say why a topic matters for finance roles (auditability, provenance, compliance, model risk, data protection under GDPR/EU AI Act).
+
+**3. Check understanding.** Occasionally ask a short question or suggest a small exercise so the owner can confirm they understood. Keep it brief and optional.
 
 ## Current status
 
@@ -16,7 +38,7 @@ This is a public portfolio project. The owner is an experienced data engineer (P
 - **Waiting on the owner:** Azure Foundry resource and model deployments, then `.env` filled in.
 - **Next:** Milestone 1, step 1: create Brand A (see docs/design.md, section 8).
 
-Update this section at the end of each work session.
+At the end of each work session, suggest the update to this section; the owner makes the edit unless they ask you to.
 
 ## Decisions
 
@@ -31,7 +53,7 @@ Update this section at the end of each work session.
 | Hand-written voice spec in the MVP | Spec extraction from the corpus comes in Milestone 3 |
 | Python 3.13, uv, ruff, pytest, MIT licence | |
 
-Record new decisions here with a one-line reason.
+New decisions are recorded here with a one-line reason (suggest the row; the owner adds it unless they ask you to).
 
 ## Conventions
 
