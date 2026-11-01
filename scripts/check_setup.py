@@ -1,4 +1,4 @@
-"""Check that the local setup works: settings, Azure OpenAI deployments, Postgres and LangSmith.
+"""Check that the local setup works: settings, Foundry deployments, Postgres and LangSmith.
 
 Run with: uv run python scripts/check_setup.py
 """
@@ -22,12 +22,13 @@ def check(name: str, fn) -> None:
 
 
 def settings_present() -> str:
+    names = ("foundry_api_key", "foundry_anthropic_endpoint", "foundry_openai_endpoint")
     missing = [
-        n for n in ("azure_openai_endpoint", "azure_openai_api_key") if not getattr(settings, n)
+        n for n in names if not getattr(settings, n) or "<your-resource>" in getattr(settings, n)
     ]
-    if missing or "<your-resource>" in settings.azure_openai_endpoint:
-        raise ValueError(f"fill in .env: {', '.join(missing) or 'azure_openai_endpoint'}")
-    return settings.azure_openai_endpoint
+    if missing:
+        raise ValueError(f"fill in .env: {', '.join(missing)}")
+    return settings.foundry_openai_endpoint.split("/openai")[0]
 
 
 def python_version() -> str:
@@ -35,13 +36,15 @@ def python_version() -> str:
 
 
 def chat(role: llm.Role) -> str:
-    model = llm.chat_model(role)
-    reply = model.invoke("Reply with the single word OK.")
-    return f"{model.model_name} replied {reply.content!r}"
+    deployment = settings.writer_deployment if role == "writer" else settings.checker_deployment
+    reply = llm.chat_model(role).invoke("Reply with the single word OK.")
+    return f"{deployment} replied {reply.text!r}"  # .text skips Claude's thinking blocks
 
 
 def embed() -> str:
     vector = llm.embeddings().embed_query("brand voice")
+    if len(vector) != settings.embedding_dimensions:
+        raise ValueError(f"expected {settings.embedding_dimensions} dimensions, got {len(vector)}")
     return f"{settings.embedding_deployment} returned {len(vector)} dimensions"
 
 
@@ -62,11 +65,11 @@ def langsmith() -> str:
 
 
 check("Python 3.13+", python_version)
-check("Azure settings in .env", settings_present)
+check("Foundry settings in .env", settings_present)
 if results[-1][1]:
-    check("Azure writer deployment", lambda: chat("writer"))
-    check("Azure checker deployment", lambda: chat("checker"))
-    check("Azure embedding deployment", embed)
+    check("Writer deployment (Claude)", lambda: chat("writer"))
+    check("Checker deployment (GPT-6 Luna)", lambda: chat("checker"))
+    check("Embedding deployment", embed)
 check("Postgres + pgvector", postgres)
 check("LangSmith", langsmith)
 

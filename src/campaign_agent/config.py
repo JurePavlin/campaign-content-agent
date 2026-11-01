@@ -9,11 +9,15 @@ load_dotenv(override=True)
 
 
 class Settings(BaseSettings):
-    azure_openai_endpoint: str = ""
-    azure_openai_api_key: str = ""
-    writer_deployment: str = "gpt-5.4"
-    checker_deployment: str = "gpt-5.4-mini"
-    embedding_deployment: str = "text-embedding-3-small"
+    # One Microsoft Foundry resource and key, two endpoints: Claude uses Anthropic's
+    # Messages API, the OpenAI models use the OpenAI-compatible v1 API.
+    foundry_api_key: str = ""
+    foundry_anthropic_endpoint: str = ""
+    foundry_openai_endpoint: str = ""
+    writer_deployment: str = "claude-haiku-5-5"
+    checker_deployment: str = "gpt-6-luna"
+    embedding_deployment: str = "text-embedding-3-large"
+    embedding_dimensions: int = 1536  # pgvector's HNSW index takes at most 2,000
     database_url: str = "postgresql://agent:agent@localhost:5432/campaign_agent"
 
 

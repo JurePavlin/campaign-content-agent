@@ -80,6 +80,8 @@ flowchart LR
     HA -- approved --> PB[publish]
 ```
 
+**Models:** the *writer* is Claude Haiku 5.5 and the *checker* is GPT-6 Luna, both hosted on Microsoft Foundry. They come from different model families, so the checker never grades writing from its own family.
+
 | Node | Does | Model |
 |---|---|---|
 | `plan` | Parses the brief into a typed task list: channels, languages, audience, key messages | checker |
@@ -101,7 +103,7 @@ One Postgres container with pgvector holds everything:
 - **LangGraph checkpoints** (`langgraph-checkpoint-postgres`): needed for the human-approval pause and for replaying runs.
 - **Long-term memory** (LangGraph store, Milestone 3): reviewer preferences such as "Brand A reviewers remove exclamation marks".
 - **Claims register:** loaded from `claims.yaml` into a table.
-- **Exemplar index:** approved snippets with embeddings and metadata filters (channel, content type, language). This is "RAG for style". It's kept separate from product facts so old examples can't leak outdated claims.
+- **Exemplar index:** approved snippets with embeddings and metadata filters (channel, content type, language). This is "RAG for style". It's kept separate from product facts so old examples can't leak outdated claims. Embeddings come from text-embedding-3-large shortened to 1,536 dimensions, which fits pgvector's 2,000-dimension limit for HNSW indexes. Each vector is stored with the embedding model's name, because vectors from different models can't be compared.
 
 ## 6. Evaluation
 
@@ -109,7 +111,7 @@ One Postgres container with pgvector holds everything:
 |---|---|---|
 | Rule checks | Hard rules | Deterministic code; unit-tested |
 | Claim accuracy | Every claim supported by the register | Extraction + matching, measured against labelled drafts |
-| LLM judge | Personality traits and tone, 1-5 | Rubric generated from the spec; calibrated against about 50 hand-rated samples |
+| LLM judge | Personality traits and tone, 1-5 | The checker model, with a rubric generated from the spec; calibrated against about 50 hand-rated samples |
 | Brand-fit classifier (later) | "Does this sound like us?" | Embeddings + logistic regression, brand vs. contrast set |
 | Red-team (M2) | Prompt-injection resistance | Attack success rate; target 0 |
 | Consistency (M2) | Same brief, 5 runs | Variance of scores and pass rate |
@@ -122,6 +124,11 @@ One Postgres container with pgvector holds everything:
 3. Plus retrieved exemplars.
 4. Plus rule and claims checks with retries.
 5. Plus the critic and editor loop (full agent).
+
+Two more comparisons:
+
+- **Model comparison:** rerun the full agent with Claude Sonnet 5.5 as the writer (does a bigger model help?) and with gpt-oss:20b running locally through Ollama (how close does a free local model get?).
+- **Retrieval check:** label about 20 briefs with the examples that should be found, then compare text-embedding-3-large with text-embedding-3-small on recall@4.
 
 All runs are traced in LangSmith. Golden briefs live in a LangSmith dataset, and evaluators run with `langsmith.evaluate`. In Milestone 2, CI blocks a merge that lowers brand fit or claim accuracy.
 
@@ -142,7 +149,7 @@ All runs are traced in LangSmith. Golden briefs live in a LangSmith dataset, and
 4. **Claims:** register in Postgres, `check_claims` node, tests with drafts that should pass and fail.
 5. **Critic, editor and human approval:** Postgres checkpointer, `interrupt()`, a simple CLI review prompt, `publish` with provenance.
 6. **Exemplar retrieval:** embed the corpus into pgvector, retrieve 3-5 examples per writer call.
-7. **Evaluation:** LangSmith dataset, LLM judge, ablation runner, results table in the README.
+7. **Evaluation:** LangSmith dataset, LLM judge, ablation runner with the model comparison and retrieval check, results table in the README.
 
 **Milestone 2: evaluation hardening (1 weekend).** Red-team set, repeated-run consistency, CI quality gates, brand-fit classifier.
 

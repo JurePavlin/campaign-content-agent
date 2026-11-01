@@ -15,27 +15,32 @@ Everything needed to run and develop the project on Windows 11.
 | Azure CLI 2.87 | Keyless Azure auth later | Installed (optional for now) |
 | Node.js 22 | Some MCP servers run with `npx` (Milestone 3) | Installed |
 | LangSmith | Tracing and evaluation | API key set machine-wide; project set in `.env` |
-| **Azure OpenAI in Foundry** | The LLMs | **To do, see step 1** |
+| **Microsoft Foundry models** | Writer, checker and embeddings | **To do, see step 1** |
+| Ollama (optional) | Local model comparison, Milestone 1 step 7 | Not installed yet |
 
-## 1. Azure OpenAI in Microsoft Foundry (one-off, about 20 minutes)
+## 1. Microsoft Foundry (one-off, about 30 minutes)
 
-1. **Use a personal Azure subscription**, not an employer's.
-2. **Set a budget alert first:** Cost Management → Budgets, for example €20 a month with alerts at 50%, 90% and 100%.
-3. **Create a Microsoft Foundry resource** in the Azure portal or at [ai.azure.com](https://ai.azure.com):
+1. **Use a personal Azure subscription with a pay-as-you-go payment method** (a card on file), not an employer's. Claude models aren't available on free-trial, student or credit-only subscriptions.
+2. **Set a budget alert first:** Cost Management → Budgets, for example €10 a month with alerts at 50%, 90% and 100%. Expected spend for Milestone 1 is a few dollars.
+3. **Create a Microsoft Foundry resource and project** at [ai.azure.com](https://ai.azure.com):
    - Resource group: `rg-campaign-agent`
-   - Region: **Sweden Central** (EU)
-4. **Deploy three models** and note each deployment name:
+   - Region: **Sweden Central** (EU). If a model isn't offered there, its model card lists the supported regions.
+4. **Deploy three models**, keeping each model's name as the deployment name:
 
-   | Deployment | Role | Model |
+   | Deployment | Role | Price per 1M tokens (input / output) |
    |---|---|---|
-   | `gpt-5.4` | Writer and editor | GPT-5.4 |
-   | `gpt-5.4-mini` | Planner, checks, judge | GPT-5.4 mini |
-   | `text-embedding-3-small` | Exemplar retrieval | text-embedding-3-small |
+   | `claude-haiku-5-5` | Writer and editor | $0.10 / $0.50 |
+   | `gpt-6-luna` | Planner, checks, critic, judge | $0.10 / $0.50 |
+   | `text-embedding-3-large` | Exemplar retrieval | $0.13 (input only) |
 
-   - Deployment type: **Global Standard** is cheapest. **Data Zone Standard (EU)** keeps processing in the EU, which is a useful data-residency talking point.
-   - A low tokens-per-minute quota is enough.
-   - If a model isn't offered to your subscription, deploy the closest available one and put its deployment name in `.env`.
-5. **Copy the endpoint and a key** into `.env`. The endpoint must end in `/openai/v1/`, for example `https://<resource>.openai.azure.com/openai/v1/`.
+   - **Claude is sold through Azure Marketplace:** you accept Anthropic's Marketplace terms when you deploy it. Claude uses the **Global Standard** deployment type.
+   - **GPT-6 Luna and the embedding model:** **Global Standard** is cheapest. **Data Zone Standard (EU)** keeps processing in the EU for about 10% more, which is a useful data-residency talking point.
+   - **Quota:** some subscription types start with zero quota for some models. Check each deployment's quota and request an increase if needed; a low tokens-per-minute quota is enough.
+5. **Copy the key and both endpoints into `.env`.** One key covers every deployment in the resource:
+   - Claude: `https://<resource>.services.ai.azure.com/anthropic`
+   - OpenAI models: `https://<resource>.services.ai.azure.com/openai/v1/`
+
+   Each deployment's details page shows its target URI if yours look different.
 
 Later hardening (good for interviews): switch from API keys to Entra ID keyless auth with `az login` and `DefaultAzureCredential`.
 
@@ -69,7 +74,8 @@ uv run pytest
 |---|---|
 | `langgraph` | The agent graph: state, nodes, loops, `Send`, `interrupt()` |
 | `langgraph-checkpoint-postgres` | Saves graph state in Postgres (human approval, replay) |
-| `langchain-openai` | Chat and embedding clients for the Azure v1 endpoint |
+| `langchain-anthropic` | Claude client for Foundry's Anthropic endpoint |
+| `langchain-openai` | GPT-6 Luna and embedding clients for Foundry's OpenAI v1 endpoint |
 | `langchain-postgres` | pgvector store for the exemplar index |
 | `psycopg[binary]` | Postgres driver |
 | `pydantic-settings`, `python-dotenv` | Settings from `.env` |
@@ -82,6 +88,7 @@ uv run pytest
 
 | Package | Milestone | Purpose |
 |---|---|---|
+| `langchain-ollama`, plus Ollama itself | 1 (step 7) | gpt-oss:20b on a local 16 GB GPU, for the model comparison |
 | `scikit-learn` | 2 | Brand-fit classifier |
 | `spacy` + `en_core_web_sm` | 3 | Stylometrics for spec extraction |
 | `mcp`, `langchain-mcp-adapters` | 3 | MCP servers for catalogue, claims and CMS |

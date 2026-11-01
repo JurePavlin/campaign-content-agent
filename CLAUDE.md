@@ -35,7 +35,7 @@ A working agent matters less than the owner understanding how and why every part
 ## Current status
 
 - **Done (1 Nov 2026):** repo, dependencies, settings (`config.py`), model clients (`llm.py`), smoke tests, CI, Postgres compose file, setup check script.
-- **Waiting on the owner:** Azure Foundry resource and model deployments, then `.env` filled in.
+- **Waiting on the owner:** a Microsoft Foundry resource with three deployments (Claude Haiku 5.5, GPT-6 Luna, text-embedding-3-large), then `.env` filled in. See docs/setup.md, step 1.
 - **Next:** Milestone 1, step 1: create Brand A (see docs/design.md, section 8).
 
 At the end of each work session, suggest the update to this section; the owner makes the edit unless they ask you to.
@@ -45,8 +45,10 @@ At the end of each work session, suggest the update to this section; the owner m
 | Decision | Why |
 |---|---|
 | LangGraph, not Pydantic AI | Appears far more often in job postings. Pydantic is still used for every structured output |
-| Azure OpenAI in Foundry via the **v1 API**, using `ChatOpenAI` with `base_url` | Azure skills matter in the target job market. The v1 API needs no `api_version`. Changing provider only touches `llm.py` |
-| Writer `gpt-5.4`, checker `gpt-5.4-mini` | Cost routing: the small model plans, checks and judges. Deployment names are configurable in `.env` |
+| All models hosted on **Microsoft Foundry**: `ChatAnthropic` for Claude (Foundry's Anthropic endpoint), `ChatOpenAI` / `OpenAIEmbeddings` for the OpenAI models (Foundry's OpenAI-compatible v1 endpoint) | Azure skills matter in the target job market. One resource and key serve both model families. Only `llm.py` knows about providers |
+| Writer **Claude Haiku 5.5**, checker **GPT-6 Luna** | Both $0.10 / $0.50 per 1M tokens, about $6 per 1,000 runs. Different model families, so the checker and judge never grade writing from their own family (self-preference bias) |
+| Embeddings: **text-embedding-3-large shortened to 1,536 dimensions** | Better than 3-small, especially across languages (French later), for a few cents. 1,536 fits pgvector's 2,000-dimension HNSW limit |
+| Local **gpt-oss:20b via Ollama** only as a comparison row in the ablation | Shows what a free local model achieves versus hosted models; not used for the main agent |
 | LangSmith for tracing and evaluation datasets | Already set up; traces LangGraph with no extra code |
 | One Postgres + pgvector container for everything | Checkpoints, memory store, claims register and exemplar index in one place. Simpler than adding Qdrant |
 | Tools as plain Python functions first, MCP servers in Milestone 3 | Keeps the MVP small. Write tools behind a small interface so they can move to MCP later |
@@ -60,7 +62,9 @@ New decisions are recorded here with a one-line reason (suggest the row; the own
 - **Every LLM output is a Pydantic model**, enforced with `with_structured_output`.
 - **Hard rules live in code**, never only in a prompt. Each rule check has unit tests with passing and failing examples.
 - **Untrusted text** (the brief, web content, corpus texts) goes into clearly delimited data sections of a prompt, never into the instructions.
-- Get models from `campaign_agent.llm.chat_model("writer" | "checker")`; don't construct clients elsewhere.
+- Get models from `campaign_agent.llm.chat_model("writer" | "checker")` and `campaign_agent.llm.embeddings()`; don't construct clients elsewhere.
+- **For the Claude writer, use `with_structured_output(Schema, method="json_schema")`.** Haiku 5.5 thinks before answering by default, and LangChain's default method (forced tool calling) doesn't work with thinking.
+- Store the embedding model's name with every vector. Vectors from different models can't be compared, so changing the model means re-embedding everything.
 - Unit tests make no network calls. Tests that call Azure or Postgres are marked `@pytest.mark.integration` and are skipped by default.
 - **Never invent results.** The README's Results section only shows numbers produced by the evaluation code.
 - Synthetic data is labelled as synthetic.

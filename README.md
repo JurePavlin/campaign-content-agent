@@ -45,7 +45,7 @@ Full design: [docs/design.md](docs/design.md).
 
 ## Stack
 
-Python 3.13 · LangGraph · Azure OpenAI in Microsoft Foundry · Postgres + pgvector · LangSmith · Pydantic · pytest · GitHub Actions · Docker Compose · uv
+Python 3.13 · LangGraph · Microsoft Foundry (Claude Haiku 5.5 writer, GPT-6 Luna checker, text-embedding-3-large) · Postgres + pgvector · LangSmith · Pydantic · pytest · GitHub Actions · Docker Compose · uv
 
 ## Roadmap
 
@@ -63,7 +63,7 @@ Prerequisites and Azure setup: [docs/setup.md](docs/setup.md).
 
 ```bash
 uv sync                                 # install dependencies
-cp .env.example .env                    # then fill in your Azure endpoint and key
+cp .env.example .env                    # then fill in your Foundry key and endpoints
 docker compose up -d                    # Postgres + pgvector
 uv run python scripts/check_setup.py   # verify everything is connected
 uv run pytest
