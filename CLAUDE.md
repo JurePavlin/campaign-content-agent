@@ -5,6 +5,7 @@
 A LangGraph agent that turns a campaign brief into an approved, on-brand, claim-checked content pack (LinkedIn post, newsletter section, product blurb; EN, later FR). It checks hard brand rules in code, matches every claim against an evidence register, resists prompt injection, pauses for human approval and records provenance. The main result is an **ablation table** that shows what each component adds.
 
 - Overview for humans: [README.md](README.md)
+- **Learning goals: the CV gaps this project must close, what's out of scope, and the rules for staying on the design: [docs/learning-goals.md](docs/learning-goals.md). Read it before planning any work.**
 - **Architecture, workflow, data, evaluation and milestones: [docs/design.md](docs/design.md). Read it before starting work.**
 - Prerequisites and Azure setup: [docs/setup.md](docs/setup.md)
 
@@ -45,7 +46,7 @@ At the end of each work session, suggest the update to this section; the owner m
 | Decision | Why |
 |---|---|
 | LangGraph, not Pydantic AI | Appears far more often in job postings. Pydantic is still used for every structured output |
-| All models hosted on **Microsoft Foundry**: `ChatAnthropic` for Claude (Foundry's Anthropic endpoint), `ChatOpenAI` / `OpenAIEmbeddings` for the OpenAI models (Foundry's OpenAI-compatible v1 endpoint) | Azure skills matter in the target job market. One resource and key serve both model families. Only `llm.py` knows about providers |
+| All models hosted on **Microsoft Foundry**: `ChatAnthropic` for Claude (Foundry's Anthropic endpoint), `ChatOpenAI` / `OpenAIEmbeddings` for the OpenAI models (Foundry's OpenAI-compatible v1 endpoint) | Azure skills matter in the target job market. Each provider has its own key, endpoint and model settings in `.env` (`ANTHROPIC_FOUNDRY_*`, `OPENAI_FOUNDRY_*`). Only `llm.py` knows about providers |
 | Writer **Claude Haiku 5.5**, checker **GPT-6 Luna** | Both $0.10 / $0.50 per 1M tokens, about $6 per 1,000 runs. Different model families, so the checker and judge never grade writing from their own family (self-preference bias) |
 | Embeddings: **text-embedding-3-large shortened to 1,536 dimensions** | Better than 3-small, especially across languages (French later), for a few cents. 1,536 fits pgvector's 2,000-dimension HNSW limit |
 | Local **gpt-oss:20b via Ollama** only as a comparison row in the ablation | Shows what a free local model achieves versus hosted models; not used for the main agent |

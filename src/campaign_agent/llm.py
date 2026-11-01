@@ -23,26 +23,26 @@ def chat_model(role: Role = "writer") -> BaseChatModel:
     """The writer drafts and edits; the checker plans, checks, critiques and judges."""
     if role == "writer":
         return ChatAnthropic(
-            model=settings.writer_deployment,
-            base_url=settings.foundry_anthropic_endpoint,
+            model=settings.writer_model,
+            base_url=settings.anthropic_foundry_base_url,
             # Explicit keys, so machine-wide ANTHROPIC_* or OPENAI_* variables are never used.
-            api_key=settings.foundry_api_key,
+            api_key=settings.anthropic_foundry_api_key,
             max_tokens=16_000,
             # Haiku 5.5 thinks before answering by default; effort sets how much.
             reasoning_effort="medium",
         )
     return ChatOpenAI(
-        model=settings.checker_deployment,
-        base_url=settings.foundry_openai_endpoint,
-        api_key=settings.foundry_api_key,
+        model=settings.checker_model,
+        base_url=settings.openai_foundry_base_url,
+        api_key=settings.openai_foundry_api_key,
     )
 
 
 def embeddings() -> OpenAIEmbeddings:
     return OpenAIEmbeddings(
-        model=settings.embedding_deployment,
+        model=settings.embedding_model,
         dimensions=settings.embedding_dimensions,  # shortened from 3,072
-        base_url=settings.foundry_openai_endpoint,
-        api_key=settings.foundry_api_key,
+        base_url=settings.openai_foundry_base_url,
+        api_key=settings.openai_foundry_api_key,
         check_embedding_ctx_length=False,  # send plain text, not tiktoken token ids
     )

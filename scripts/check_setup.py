@@ -21,14 +21,13 @@ def check(name: str, fn) -> None:
         results.append((name, False, f"{type(exc).__name__}: {exc}"[:200]))
 
 
-def settings_present() -> str:
-    names = ("foundry_api_key", "foundry_anthropic_endpoint", "foundry_openai_endpoint")
+def settings_present(*names: str) -> str:
     missing = [
         n for n in names if not getattr(settings, n) or "<your-resource>" in getattr(settings, n)
     ]
     if missing:
-        raise ValueError(f"fill in .env: {', '.join(missing)}")
-    return settings.foundry_openai_endpoint.split("/openai")[0]
+        raise ValueError(f"fill in .env: {', '.join(n.upper() for n in missing)}")
+    return getattr(settings, names[1])  # the base URL
 
 
 def python_version() -> str:
@@ -36,16 +35,16 @@ def python_version() -> str:
 
 
 def chat(role: llm.Role) -> str:
-    deployment = settings.writer_deployment if role == "writer" else settings.checker_deployment
+    model = settings.writer_model if role == "writer" else settings.checker_model
     reply = llm.chat_model(role).invoke("Reply with the single word OK.")
-    return f"{deployment} replied {reply.text!r}"  # .text skips Claude's thinking blocks
+    return f"{model} replied {reply.text!r}"  # .text skips Claude's thinking blocks
 
 
 def embed() -> str:
     vector = llm.embeddings().embed_query("brand voice")
     if len(vector) != settings.embedding_dimensions:
         raise ValueError(f"expected {settings.embedding_dimensions} dimensions, got {len(vector)}")
-    return f"{settings.embedding_deployment} returned {len(vector)} dimensions"
+    return f"{settings.embedding_model} returned {len(vector)} dimensions"
 
 
 def postgres() -> str:
@@ -65,11 +64,19 @@ def langsmith() -> str:
 
 
 check("Python 3.13+", python_version)
-check("Foundry settings in .env", settings_present)
+check(
+    "Claude settings in .env",
+    lambda: settings_present("anthropic_foundry_api_key", "anthropic_foundry_base_url"),
+)
 if results[-1][1]:
-    check("Writer deployment (Claude)", lambda: chat("writer"))
-    check("Checker deployment (GPT-6 Luna)", lambda: chat("checker"))
-    check("Embedding deployment", embed)
+    check("Writer model (Claude)", lambda: chat("writer"))
+check(
+    "OpenAI settings in .env",
+    lambda: settings_present("openai_foundry_api_key", "openai_foundry_base_url"),
+)
+if results[-1][1]:
+    check("Checker model (GPT-6 Luna)", lambda: chat("checker"))
+    check("Embedding model", embed)
 check("Postgres + pgvector", postgres)
 check("LangSmith", langsmith)
 

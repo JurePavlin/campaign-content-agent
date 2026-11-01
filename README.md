@@ -41,7 +41,7 @@ flowchart LR
 7. **Publish:** write to a mock CMS with provenance: model, voice-spec version, approver, time.
 8. **Learn:** reviewer edits become memory, new examples and regression tests.
 
-Full design: [docs/design.md](docs/design.md).
+Full design: [docs/design.md](docs/design.md). What this project is built to teach: [docs/learning-goals.md](docs/learning-goals.md).
 
 ## Stack
 

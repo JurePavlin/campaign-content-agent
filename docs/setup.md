@@ -36,11 +36,19 @@ Everything needed to run and develop the project on Windows 11.
    - **Claude is sold through Azure Marketplace:** you accept Anthropic's Marketplace terms when you deploy it. Claude uses the **Global Standard** deployment type.
    - **GPT-6 Luna and the embedding model:** **Global Standard** is cheapest. **Data Zone Standard (EU)** keeps processing in the EU for about 10% more, which is a useful data-residency talking point.
    - **Quota:** some subscription types start with zero quota for some models. Check each deployment's quota and request an increase if needed; a low tokens-per-minute quota is enough.
-5. **Copy the key and both endpoints into `.env`.** One key covers every deployment in the resource:
-   - Claude: `https://<resource>.services.ai.azure.com/anthropic`
-   - OpenAI models: `https://<resource>.services.ai.azure.com/openai/v1/`
+5. **Fill in `.env`** with each provider's key, endpoint and model name. Each deployment's details page shows its key and target URI.
 
-   Each deployment's details page shows its target URI if yours look different.
+   | Setting | Value |
+   |---|---|
+   | `ANTHROPIC_FOUNDRY_API_KEY` | Key for the Claude deployment |
+   | `ANTHROPIC_FOUNDRY_BASE_URL` | `https://<resource>.services.ai.azure.com/anthropic` |
+   | `WRITER_MODEL` | `claude-haiku-5-5` (your deployment name) |
+   | `OPENAI_FOUNDRY_API_KEY` | Key for the OpenAI deployments |
+   | `OPENAI_FOUNDRY_BASE_URL` | `https://<resource>.services.ai.azure.com/openai/v1/` |
+   | `CHECKER_MODEL` | `gpt-6-luna` |
+   | `EMBEDDING_MODEL` | `text-embedding-3-large` |
+
+   If everything is in one resource, the two keys are the same. Separate settings let you put Claude in a different resource or region later.
 
 Later hardening (good for interviews): switch from API keys to Entra ID keyless auth with `az login` and `DefaultAzureCredential`.
 
@@ -62,7 +70,7 @@ uv run python scripts/check_setup.py
 uv run pytest
 ```
 
-`check_setup.py` reports OK or FAIL for Python, the Azure settings, each Azure deployment, Postgres with pgvector, and LangSmith.
+`check_setup.py` reports OK or FAIL for Python, the Claude and OpenAI settings, each model, Postgres with pgvector, and LangSmith.
 
 **Note:** `LANGSMITH_TRACING=true` is set machine-wide, so every LangChain program on this machine sends traces to LangSmith. This project's `.env` sends them to the `campaign-content-agent` project.
 
