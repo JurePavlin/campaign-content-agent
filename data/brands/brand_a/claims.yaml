@@ -1,0 +1,311 @@
+# SYNTHETIC: Moien Vëlo is a fictional brand. Evidence references marked "synthetic"
+# point to documents that don't exist; they stand in for the real evidence a company would hold.
+#
+# The approved claims register. A draft may only make a claim that is listed here with
+# status "approved" and is valid on the publication date. Claims with status
+# "not_substantiated" are listed so the claims check can recognise and block them.
+#
+# Fields:
+#   status       approved | not_substantiated
+#   category     safety | performance | product | health | environmental | service | offer | legal | reputation
+#   products     product ids from catalogue.yaml, or [all]
+#   valid_from / valid_until   inclusive dates; null means no limit
+version: 1.0.0
+brand: brand-a
+
+claims:
+  # --- Approved: safety and product ---
+  - id: CL-001
+    claim: "The motor on every Moien Vëlo bike stops assisting at 20 km/h or less, below the EU limit of 25 km/h."
+    category: safety
+    status: approved
+    products: [all]
+    evidence: {type: spec_sheet, ref: "SPEC-WU-01 to SPEC-WU-06 (synthetic)", summary: "Controller firmware caps assistance at 10-20 km/h depending on model."}
+    valid_from: 2024-03-04
+    valid_until: null
+
+  - id: CL-002
+    claim: "A bike travelling at 15 km/h needs less distance to stop than one travelling at 25 km/h."
+    category: safety
+    status: approved
+    products: [all]
+    evidence: {type: test_report, ref: "TR-2024-02 braking distance test (synthetic)", summary: "Dry tarmac, same rider and brakes: 3.1 m from 15 km/h, 7.4 m from 25 km/h."}
+    valid_from: 2024-03-04
+    valid_until: null
+    notes: "Supports 'less distance to stop' and 'more time to react'. Does not support 'safest' or any accident-risk figure."
+
+  - id: CL-003
+    claim: "Every model has hydraulic disc brakes."
+    category: safety
+    status: approved
+    products: [all]
+    evidence: {type: spec_sheet, ref: "SPEC-WU-01 to SPEC-WU-06 (synthetic)", summary: "Hydraulic disc brakes front and rear on all models."}
+    valid_from: 2024-03-04
+    valid_until: null
+
+  - id: CL-004
+    claim: "Every model is tested to EN 15194, the European safety standard for electric bikes."
+    category: safety
+    status: approved
+    products: [all]
+    evidence: {type: certificate, ref: "EN 15194 test certificates CERT-2024-11 to CERT-2026-31 (synthetic)", summary: "Independent lab certificates for each model."}
+    valid_from: 2024-03-04
+    valid_until: null
+
+  - id: CL-005
+    claim: "Walk assist moves the bike at up to 6 km/h while you walk beside it."
+    category: product
+    status: approved
+    products: [all]
+    evidence: {type: spec_sheet, ref: "SPEC-WU-01 to SPEC-WU-06 (synthetic)", summary: "Walk assist limited to 6 km/h."}
+    valid_from: 2024-03-04
+    valid_until: null
+
+  - id: CL-006
+    claim: "Front and rear lights are built in, powered by the main battery, and come on when you switch the bike on."
+    category: safety
+    status: approved
+    products: [all]
+    evidence: {type: spec_sheet, ref: "SPEC-WU-01 to SPEC-WU-06 (synthetic)", summary: "Integrated lighting wired to the main battery."}
+    valid_from: 2024-03-04
+    valid_until: null
+
+  - id: CL-007
+    claim: "In Gentle Effort mode (assist level 5), the motor adds up to four times your own pedalling effort."
+    category: performance
+    status: approved
+    products: [all]
+    evidence: {type: spec_sheet, ref: "Motor supplier data sheet MD-250 (synthetic)", summary: "Maximum support ratio 400% at level 5."}
+    valid_from: 2024-03-04
+    valid_until: null
+
+  - id: CL-008
+    claim: "The Steady Eddie stays upright when you stop, so you don't need to balance or put a foot down."
+    category: product
+    status: approved
+    products: [WU-03]
+    evidence: {type: spec_sheet, ref: "SPEC-WU-03 (synthetic)", summary: "Three-wheeled trike with parking brake."}
+    valid_from: 2025-04-07
+    valid_until: null
+    notes: "Does not support 'impossible to fall off' (see CL-031)."
+
+  - id: CL-009
+    claim: "The Gentle Climber's motor delivers 85 Nm of torque for climbing hills."
+    category: performance
+    status: approved
+    products: [WU-04]
+    evidence: {type: spec_sheet, ref: "SPEC-WU-04 (synthetic)", summary: "Motor rated at 85 Nm peak torque."}
+    valid_from: 2025-04-14
+    valid_until: null
+
+  - id: CL-010
+    claim: "Every bike gets a 40-point check and a test ride by our mechanics before it reaches you."
+    category: product
+    status: approved
+    products: [all]
+    evidence: {type: internal_process, ref: "Workshop checklist QC-01 (synthetic)", summary: "Signed 40-point checklist kept for each frame number."}
+    valid_from: 2024-03-04
+    valid_until: null
+
+  - id: CL-011
+    claim: "You always pedal: the motor adds to your effort rather than replacing it."
+    category: health
+    status: approved
+    products: [all]
+    evidence: {type: spec_sheet, ref: "SPEC-WU-01 to SPEC-WU-06 (synthetic); EN 15194", summary: "Pedal-assist only; the motor gives no help unless the rider pedals (walk assist aside)."}
+    valid_from: 2024-03-04
+    valid_until: null
+    notes: "Supports 'you still pedal', 'you stay active'. Does not support any health outcome (see CL-028, CL-029)."
+
+  - id: CL-012
+    claim: "The Café Racer is our slowest and lightest bike."
+    category: product
+    status: approved
+    products: [WU-05]
+    evidence: {type: spec_sheet, ref: "SPEC-WU-05 (synthetic)", summary: "10 km/h assistance limit and 22 kg, the lowest in the range."}
+    valid_from: 2026-04-13
+    valid_until: null
+
+  # --- Approved: legal ---
+  - id: CL-013
+    claim: "Because the motor is limited to 250 W and stops helping below 25 km/h, our bikes count as bicycles: no licence or registration is needed, and they may use cycle paths."
+    category: legal
+    status: approved
+    products: [all]
+    evidence: {type: regulation, ref: "Regulation (EU) No 168/2013, Article 2(2)(h); Luxembourg Code de la route", summary: "Pedal-assisted cycles up to 250 W with assistance cutting out at 25 km/h are excluded from vehicle type approval and treated as bicycles."}
+    valid_from: 2024-03-04
+    valid_until: null
+
+  # --- Approved: environmental (specific and evidenced) ---
+  - id: CL-014
+    claim: "Since 1 January 2026, the frames of all our bikes are made with at least 60% recycled aluminium."
+    category: environmental
+    status: approved
+    products: [all]
+    evidence: {type: certificate, ref: "Frame supplier recycled-content certificates RC-2026-01 onwards (synthetic)", summary: "Batch certificates show 60-68% recycled aluminium."}
+    valid_from: 2026-01-01
+    valid_until: null
+    notes: "Say the exact figure. Don't turn it into a general claim such as 'sustainable bikes'."
+
+  - id: CL-015
+    claim: "We take back old e-bike batteries at our showroom and send them to a specialist recycler, free of charge, whether or not you buy a replacement from us."
+    category: environmental
+    status: approved
+    products: [all]
+    evidence: {type: contract, ref: "Recycling partner agreement RP-2025-03 (synthetic)", summary: "Collection and recycling agreement with a licensed battery recycler."}
+    valid_from: 2025-11-01
+    valid_until: null
+
+  # --- Approved: services ---
+  - id: CL-016
+    claim: "Free home delivery and set-up anywhere in Luxembourg."
+    category: service
+    status: approved
+    products: [all]
+    evidence: {type: terms, ref: "Terms of sale, section 4 (synthetic)", summary: "Delivery and fitting included in the price for Luxembourg addresses."}
+    valid_from: 2024-03-04
+    valid_until: null
+
+  - id: CL-017
+    claim: "Every new bike comes with a free one-hour Steady Start lesson."
+    category: service
+    status: approved
+    products: [all]
+    evidence: {type: terms, ref: "Terms of sale, section 5 (synthetic)", summary: "One lesson included with each new bike."}
+    valid_from: 2024-03-04
+    valid_until: null
+
+  - id: CL-018
+    claim: "Every new bike gets a free first service after three months."
+    category: service
+    status: approved
+    products: [all]
+    evidence: {type: terms, ref: "Terms of sale, section 6 (synthetic)", summary: "First service included."}
+    valid_from: 2024-03-04
+    valid_until: null
+
+  - id: CL-019
+    claim: "A two-year warranty on the bike and a three-year warranty on the battery."
+    category: service
+    status: approved
+    products: [all]
+    evidence: {type: terms, ref: "Warranty terms W-2024 (synthetic)", summary: "Frame, motor and components 2 years; battery 3 years."}
+    valid_from: 2024-03-04
+    valid_until: null
+
+  - id: CL-020
+    claim: "Free test rides at our showroom in Bertrange."
+    category: service
+    status: approved
+    products: [all]
+    evidence: {type: terms, ref: "Showroom policy (synthetic)", summary: "No charge, no obligation."}
+    valid_from: 2024-03-04
+    valid_until: null
+
+  - id: CL-021
+    claim: "Free test rides at home: we bring two or three bikes to your door anywhere in Luxembourg, with no obligation to buy."
+    category: service
+    status: approved
+    products: [all]
+    evidence: {type: terms, ref: "Home test ride policy HT-2025 (synthetic)", summary: "Service introduced in August 2025."}
+    valid_from: 2025-08-01
+    valid_until: null
+
+  # --- Approved: offers (check the dates) ---
+  - id: CL-022
+    claim: "Free pair of panniers with every Sunday Best ordered before 30 November 2026."
+    category: offer
+    status: approved
+    products: [WU-02]
+    evidence: {type: promotion, ref: "Promotion PR-2026-04 (synthetic)", summary: "Autumn 2026 offer approved by management."}
+    valid_from: 2026-10-20
+    valid_until: 2026-11-30
+
+  - id: CL-023
+    claim: "EUR 200 off the Gentle Climber."
+    category: offer
+    status: approved
+    products: [WU-04]
+    evidence: {type: promotion, ref: "Promotion PR-2026-01 (synthetic)", summary: "Spring 2026 offer. Expired; not approved for any later period."}
+    valid_from: 2026-03-01
+    valid_until: 2026-05-31
+
+  # --- Not substantiated: the claims check must block these ---
+  - id: CL-024
+    claim: "The safest e-bike on the market."
+    category: safety
+    status: not_substantiated
+    products: [all]
+    evidence: null
+    notes: "No comparative safety data. Comparative superlatives need evidence covering the whole market."
+
+  - id: CL-025
+    claim: "Riding slowly halves your risk of an accident."
+    category: safety
+    status: not_substantiated
+    products: [all]
+    evidence: null
+    notes: "No study supports this figure. Use CL-002 instead."
+
+  - id: CL-026
+    claim: "Our bikes are eco-friendly, green or good for the planet."
+    category: environmental
+    status: not_substantiated
+    products: [all]
+    evidence: null
+    notes: "Generic environmental claim, prohibited under Directive (EU) 2024/825 from 27 September 2026. Use CL-014 or CL-015."
+
+  - id: CL-027
+    claim: "Our delivery is carbon neutral because we offset the emissions."
+    category: environmental
+    status: not_substantiated
+    products: [all]
+    evidence: null
+    notes: "Claims of neutral or reduced impact based on offsetting are prohibited under Directive (EU) 2024/825."
+
+  - id: CL-028
+    claim: "Riding our bikes lowers your blood pressure or improves your heart health."
+    category: health
+    status: not_substantiated
+    products: [all]
+    evidence: null
+    notes: "Health outcome claim with no evidence. Use CL-011."
+
+  - id: CL-029
+    claim: "A ride burns as many calories as a gym session."
+    category: health
+    status: not_substantiated
+    products: [all]
+    evidence: null
+
+  - id: CL-030
+    claim: "Luxembourg's favourite e-bike brand."
+    category: reputation
+    status: not_substantiated
+    products: [all]
+    evidence: null
+    notes: "No market survey or sales data supports this."
+
+  - id: CL-031
+    claim: "It's impossible to fall off the Steady Eddie."
+    category: safety
+    status: not_substantiated
+    products: [WU-03]
+    evidence: null
+    notes: "Overstates CL-008. A trike can still tip on a slope or a sharp turn."
+
+  - id: CL-032
+    claim: "Our batteries last a lifetime."
+    category: product
+    status: not_substantiated
+    products: [all]
+    evidence: null
+    notes: "Contradicts the three-year battery warranty (CL-019)."
+
+  - id: CL-033
+    claim: "The Grand Tour can ride 150 km on a charge with a range extender."
+    category: performance
+    status: not_substantiated
+    products: [WU-06]
+    evidence: null
+    notes: "There is no range extender. The catalogue range is up to 100 km."

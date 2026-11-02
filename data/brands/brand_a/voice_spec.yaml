@@ -1,0 +1,120 @@
+# SYNTHETIC: Moien Vëlo is a fictional brand created for this project.
+# Machine-readable version of style_guide.md. Loaded into a Pydantic model (Milestone 1, step 2).
+brand: brand-a
+name: "Moien Vëlo"
+version: 1.0.0
+tagline: "We don't want to get you there fast. We want to get you there alive."
+
+voice:
+  personality:
+    - {is: reassuring, not: patronising}
+    - {is: dry-witted, not: jokey}
+    - {is: courteous, not: stuffy}
+    - {is: honest, not: salesy}
+  values:
+    - safety over speed
+    - plain language
+    - honest about trade-offs
+    - respect for the reader's experience
+  principles:
+    - Joke about effort, never about age.
+    - Never label readers by age.
+
+# 0-1 on the four Nielsen Norman Group tone dimensions: 0 = first word, 1 = second word.
+tone_by_channel:
+  social: {funny_serious: 0.4, formal_casual: 0.5, respectful_irreverent: 0.2, enthusiastic_matter_of_fact: 0.6}
+  email: {funny_serious: 0.5, formal_casual: 0.4, respectful_irreverent: 0.1, enthusiastic_matter_of_fact: 0.6}
+  web: {funny_serious: 0.7, formal_casual: 0.3, respectful_irreverent: 0.1, enthusiastic_matter_of_fact: 0.8}
+
+style:
+  spelling: en-GB
+  reading_grade_max: 8
+  contractions: allowed # preferred | allowed | avoid
+  apostrophe: straight
+  emoji_max: {social: 1, email: 0, web: 0}
+  exclamation_max: {social: 1, email: 1, web: 0}
+  hashtags_max: {social: 3, email: 0, web: 0}
+  length_words:
+    social: {min: 40, max: 150}
+    email: {min: 60, max: 200}
+    web: {min: 30, max: 120}
+
+vocabulary:
+  # Matched as whole words or phrases, case-insensitive.
+  banned:
+    # internet slang
+    - skibidi
+    - low key
+    - lowkey
+    - no cap
+    - rizz
+    - slay
+    - bussin
+    - it's giving
+    - vibe check
+    - vibes
+    - sus
+    - fr fr
+    - bestie
+    - periodt
+    - yeet
+    - sheesh
+    - delulu
+    - main character energy
+    - on fleek
+    # hype and speed boasts
+    - revolutionary
+    - world-class
+    - game-changer
+    - cutting-edge
+    - next-level
+    - unleash
+    - turbo
+    - blazing
+    - lightning-fast
+    - adrenaline
+    - need for speed
+    # generic environmental claims (Directive (EU) 2024/825)
+    - eco-friendly
+    - environmentally friendly
+    - climate neutral
+    - carbon neutral
+    - climate positive
+    - planet-friendly
+    - green credentials
+    # labels that patronise readers
+    - elderly
+    - OAP
+    - pensioner
+    - pensioners
+    - old folks
+    - geriatric
+    - senior moment
+    - over the hill
+    - young at heart
+    - silver surfer
+  # Correct form, and the wrong forms to flag. Matched case-sensitively.
+  glossary:
+    - {term: "Moien Vëlo", wrong: ["Moien Velo", "Moien vëlo", "moien vëlo", "MoienVëlo"]}
+    - {term: e-bike, wrong: [ebike, e bike, E-Bike]}
+    - {term: km/h, wrong: [kmh, kph, km per hour]}
+    - {term: Stroller, wrong: [stroller]}
+    - {term: Sunday Best, wrong: [sunday best, Sunday best]}
+    - {term: Steady Eddie, wrong: [steady eddie, Steady eddie]}
+    - {term: Gentle Climber, wrong: [gentle climber, Gentle climber]}
+    - {term: Café Racer, wrong: [Cafe Racer, café racer, Café racer]}
+    - {term: Grand Tour, wrong: [Grand tour]}
+    - {term: Gentle Effort mode, wrong: [gentle effort mode, Gentle Effort Mode]}
+    - {term: Steady Start lesson, wrong: [steady start lesson, Steady Start Lesson]}
+
+examples:
+  - off_brand: "Experience our revolutionary, eco-friendly e-bike!"
+    on_brand: "Ride to the market in 15 minutes, and stop as often as you like on the way."
+  - off_brand: "Perfect for the elderly, so easy anyone can use it!"
+    on_brand: "Setting off takes one button and a gentle push."
+  - off_brand: "The safest bike on the market, guaranteed!"
+    on_brand: "Its motor stops helping at 15 km/h, so you have more time to react and less distance to stop."
+  - off_brand: "No cap, this bike slaps."
+    on_brand: "It won't win any races. It isn't meant to."
+  - off_brand: "Get fit fast and burn hundreds of calories!"
+    on_brand: "You still pedal. The motor simply makes it feel like a very good day."
