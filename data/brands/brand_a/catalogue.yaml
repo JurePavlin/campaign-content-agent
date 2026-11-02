@@ -1,0 +1,101 @@
+# SYNTHETIC: Moien Vëlo is a fictional brand; all products, specs and prices are invented.
+# Product facts the writer may use. Marketing claims that need evidence live in claims.yaml.
+company:
+  name: "Moien Vëlo"
+  founded: 2023
+  showroom: Bertrange, Luxembourg
+  showroom_opened: 2024-03-04
+  opening_hours: Tuesday to Saturday, 10:00 to 18:00
+  delivery_area: Luxembourg only
+
+# Shared by every model unless a product says otherwise.
+common_specs:
+  motor_w: 250
+  assist_levels: 5 # level 5 is called Gentle Effort mode
+  brakes: hydraulic disc
+  lights: front and rear, built in, powered by the main battery
+  walk_assist_kmh: 6
+  charge_time_h: "4-5"
+  electrics: rated IPX5, suitable for riding in the rain
+  colours: [cream, navy, British racing green]
+  # Ranges are measured at assist level 1 in internal tests; higher levels use more battery.
+  range_note: measured at assist level 1
+
+products:
+  - id: WU-01
+    name: Stroller
+    type: step-through city e-bike
+    best_for: short town trips and errands
+    assisted_speed_max_kmh: 15
+    range_km: 60
+    battery_wh: 400
+    weight_kg: 24
+    frame: low step-through
+    price_eur: 2890
+    price_history:
+      - {price_eur: 2690, valid_from: 2024-03-04, valid_until: 2026-02-28}
+      - {price_eur: 2890, valid_from: 2026-03-01}
+    launched: 2024-03-11
+
+  - id: WU-02
+    name: Sunday Best
+    type: upright comfort tourer
+    best_for: longer, gentle outings
+    assisted_speed_max_kmh: 18
+    range_km: 80
+    battery_wh: 500
+    weight_kg: 26
+    frame: low step-through
+    price_eur: 3450
+    launched: 2024-03-25
+
+  - id: WU-03
+    name: Steady Eddie
+    type: electric trike (one wheel at the front, two at the back)
+    best_for: riders who don't want to balance
+    assisted_speed_max_kmh: 12
+    range_km: 50
+    battery_wh: 500
+    weight_kg: 38
+    frame: low step-through, wide seat
+    extras: [rear basket (40 litres)]
+    price_eur: 4190
+    launched: 2025-04-07
+
+  - id: WU-04
+    name: Gentle Climber
+    type: hill e-bike
+    best_for: hilly areas such as the north of Luxembourg
+    assisted_speed_max_kmh: 18
+    range_km: 70
+    battery_wh: 625
+    weight_kg: 27
+    torque_nm: 85
+    frame: low step-through
+    price_eur: 3890
+    launched: 2025-04-14
+
+  - id: WU-05
+    name: Café Racer
+    type: lightweight town e-bike (our slowest and lightest)
+    best_for: short trips, often to a café
+    assisted_speed_max_kmh: 10
+    range_km: 40
+    battery_wh: 300
+    weight_kg: 22
+    frame: low step-through
+    price_eur: 2490
+    launched: 2026-04-13
+
+  - id: WU-06
+    name: Grand Tour
+    type: touring e-bike
+    best_for: long day rides and touring
+    assisted_speed_max_kmh: 20
+    range_km: 100
+    battery_wh: 750
+    weight_kg: 28
+    frame: low step-through
+    extras: [rear rack, two panniers]
+    price_eur: 4690
+    launched: 2026-11-15 # announced, not yet on sale on 2 November 2026
