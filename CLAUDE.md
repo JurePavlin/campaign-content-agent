@@ -36,9 +36,14 @@ A working agent matters less than the owner understanding how and why every part
 ## Current status
 
 - **Done (1 Nov 2026):** repo, dependencies, settings (`config.py`), model clients (`llm.py`), smoke tests, CI, Postgres compose file, setup check script. Foundry deployments and `.env` set up; `check_setup.py` passes all checks.
-- **Done (2 Nov 2026):** Milestone 1, step 1: Brand A data for **Moien Vëlo** (style guide, voice spec, catalogue, claims register, 150-text corpus, 30 golden briefs). See data/README.md.
-- **Waiting on the owner:** review the Brand A data and commit it.
-- **Next:** Milestone 1, step 2: Pydantic model for the voice spec, loader, deterministic rule checks and unit tests (see docs/design.md, section 8).
+- **Done (2 Nov 2026):** Milestone 1, step 1: Brand A data for **Moien Vëlo** (style guide, voice spec, catalogue, claims register, 150-text corpus, 30 golden briefs). See data/README.md. Merged in PR #1.
+- **Done (4 Nov 2026):** Milestone 1, step 2 (on branch `spec-model`, PR not opened yet):
+  - `spec/models.py`: Pydantic models for the voice spec (strict, frozen, extra keys forbidden, cross-field validators).
+  - `spec/loader.py`: `load_spec(path) -> VoiceSpec`, using `yaml.safe_load`.
+  - `spec/rules.py`: 8 deterministic checks (banned words, glossary, apostrophes, length, emoji, exclamation marks, hashtags, reading grade), each `(text, channel, spec) -> list[Violation]`, plus `check_all`.
+  - 230 unit tests, including one that runs every rule over all 150 corpus texts and expects no violations.
+- **Waiting on the owner:** review step 2, commit, and open the PR.
+- **Next:** Milestone 1, step 3: graph skeleton (state, `plan`, `write`, `check_rules` loop), run from the command line and traced in LangSmith.
 
 At the end of each work session, suggest the update to this section; the owner makes the edit unless they ask you to.
 
